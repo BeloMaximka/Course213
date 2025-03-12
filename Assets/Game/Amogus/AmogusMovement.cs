@@ -6,9 +6,8 @@ public class AmogusMovement : MonoBehaviour
     public bool playerCanMove = true;
     public float walkSpeed = 3f;
     public float maxVelocityChange = 10f;
-
-    // Internal Variables
     private bool isGrounded = false;
+    private bool isDead = false;
 
     private Rigidbody rb;
 
@@ -22,9 +21,19 @@ public class AmogusMovement : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         CheckGround();
 
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space) )
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isDead = true;
+            animator.SetTrigger("Death");
+        }
+        else if (isGrounded && Input.GetKeyDown(KeyCode.Space) )
         {
             rb.AddForce(0f, 5f, 0f, ForceMode.Impulse);
             isGrounded = false;
@@ -34,6 +43,11 @@ public class AmogusMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         Vector3 targetVelocity = new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         if(isGrounded)
