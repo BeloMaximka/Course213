@@ -362,6 +362,11 @@ public class FirstPersonController : MonoBehaviour
         {
             HeadBob();
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            cameraCanMove = !cameraCanMove;
+        }
     }
 
     void FixedUpdate()
