@@ -1,4 +1,5 @@
 using Assets.Game.Amogus;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class AmogusMovement : MonoBehaviour
@@ -33,12 +34,7 @@ public class AmogusMovement : MonoBehaviour
 
         CheckGround();
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            isDead = true;
-            animator.SetTrigger("Death");
-        }
-        else if (isGrounded && Random.Range(1, 240) == 1 )
+        if (isGrounded && Random.Range(1, 240) == 1 )
         {
             rb.AddForce(0f, 5f, 0f, ForceMode.Impulse);
             isGrounded = false;
@@ -79,6 +75,12 @@ public class AmogusMovement : MonoBehaviour
         velocityChange.y = 0;
 
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        isDead = true;
+        animator.SetTrigger("Death");
     }
 
     private void CheckGround()
