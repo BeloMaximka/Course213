@@ -4,10 +4,12 @@ public class PistolScript : MonoBehaviour
 {
     GameObject camera;
     LayerMask enemyMask;
+    Animator animator;
     void Start()
     {
         camera = GameObject.FindWithTag("MainCamera");
         enemyMask = LayerMask.GetMask("Enemy");
+        animator = gameObject.GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -18,6 +20,7 @@ public class PistolScript : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
+            animator.SetTrigger("Fire");
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
                 hit.transform.gameObject.SendMessage("ApplyDamage", 50);
