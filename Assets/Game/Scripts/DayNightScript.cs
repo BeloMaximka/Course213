@@ -1,9 +1,11 @@
+using Assets.Game;
 using UnityEngine;
 
 public class DayNightScript : MonoBehaviour
 {
+    [SerializeField]
     private float dayDuration = 10.0f;
-    private float dayTime;
+    private float dayTime = 12f;
     private float rotationAngle;
     private float dawnTime = 4.0f;
     private float noonTime = 7.0f;
@@ -16,10 +18,12 @@ public class DayNightScript : MonoBehaviour
     [SerializeField]
     private Light moon;
     private Material skyBox;
+    bool isDay;
 
     void Start()
     {
         rotationAngle = -360.0f / dayDuration;
+        dayTime = 12.0f - transform.eulerAngles.z / 360.0f * 24.0f;
         while (dayTime >= 24)
         {
             dayTime -= 24f;
@@ -62,9 +66,24 @@ public class DayNightScript : MonoBehaviour
                 sun.intensity = 0;
             }
         }
+        UpdateDayState(coef);
         RenderSettings.ambientIntensity = coef;
         skyBox.SetFloat("_Exposure", coef * maxSkyboxExposure);
 
         this.transform.Rotate(0, 0, rotationAngle * Time.deltaTime);
+    }
+
+    private void UpdateDayState(float coef)
+    {
+        if(coef < 0.5f && isDay)
+        {
+            isDay = false;
+            GameEvents.OnNightBegin();
+        }
+        else if (coef > 0.5f && !isDay)
+        {
+            isDay = true;
+            GameEvents.OnDayBegin();
+        }
     }
 }
