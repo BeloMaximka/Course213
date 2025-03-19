@@ -10,13 +10,18 @@ public class AmogusMovement : MonoBehaviour
     private bool isDead = false;
 
     private Rigidbody rb;
+    private GameObject player;
+    private Transform modelWrap;
 
     [SerializeField]
     private Animator animator;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        player = GameObject.FindWithTag("Player");
+        modelWrap = transform.Find("ModelWrap");
     }
 
     void Update()
@@ -33,7 +38,7 @@ public class AmogusMovement : MonoBehaviour
             isDead = true;
             animator.SetTrigger("Death");
         }
-        else if (isGrounded && Input.GetKeyDown(KeyCode.Space) )
+        else if (isGrounded && Random.Range(1, 240) == 1 )
         {
             rb.AddForce(0f, 5f, 0f, ForceMode.Impulse);
             isGrounded = false;
@@ -48,9 +53,12 @@ public class AmogusMovement : MonoBehaviour
             return;
         }
 
-        Vector3 targetVelocity = new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 targetVelocity = (player.transform.position - transform.position).normalized;
+        Vector3 lookDirection = (player.transform.position - transform.position).normalized;
+        lookDirection.y = 0;
+        modelWrap.rotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(0, -90, 0);
 
-        if(isGrounded)
+        if (isGrounded)
         {
             if (targetVelocity.x != 0 || targetVelocity.z != 0)
             {
