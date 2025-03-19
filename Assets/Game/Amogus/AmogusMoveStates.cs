@@ -4,6 +4,7 @@
     {
         Idle,
         Walking,
-        Jumping
+        Jumping,
+        Damaged
     }
 }

@@ -9,6 +9,7 @@ public class AmogusMovement : MonoBehaviour
     public float maxVelocityChange = 10f;
     private bool isGrounded = false;
     private bool isDead = false;
+    private int health = 100;
 
     private Rigidbody rb;
     private GameObject player;
@@ -17,6 +18,17 @@ public class AmogusMovement : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+
+    public bool IsDead
+    {
+        set
+        {
+            isDead = value;
+            animator.SetTrigger("Death");
+
+        }
+        get => isDead;
+    }
 
     void Start()
     {
@@ -27,7 +39,7 @@ public class AmogusMovement : MonoBehaviour
 
     void Update()
     {
-        if (isDead)
+        if (IsDead)
         {
             return;
         }
@@ -44,7 +56,7 @@ public class AmogusMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isDead)
+        if (IsDead)
         {
             return;
         }
@@ -79,8 +91,14 @@ public class AmogusMovement : MonoBehaviour
 
     public void ApplyDamage(int damage)
     {
-        isDead = true;
-        animator.SetTrigger("Death");
+        if (IsDead) return;
+
+        UpdateMoveState(AmogusMoveStates.Damaged);
+        health -= damage;
+        if (health <= 0)
+        {
+            IsDead = true;
+        }
     }
 
     private void CheckGround()
@@ -97,7 +115,6 @@ public class AmogusMovement : MonoBehaviour
         else
         {
             isGrounded = false;
-            UpdateMoveState(AmogusMoveStates.Jumping);
         }
     }
 
