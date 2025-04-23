@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Game.Global;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EntitySpawner : MonoBehaviour
@@ -6,6 +7,9 @@ public class EntitySpawner : MonoBehaviour
     [Header("Spawn Settings")]
     [Tooltip("Entity prefabs to choose from")]
     public GameObject[] entityPrefabs;
+
+    [Tooltip("Determines which shared collection to use")]
+    public EntityType sharedCollectionType = EntityType.Shared;
 
     [Tooltip("Center of the spawn circle")]
     public Transform spawnAnchor;
@@ -33,7 +37,7 @@ public class EntitySpawner : MonoBehaviour
     public bool isDebug;
 
     // Internal list to track spawned enemies
-    private readonly List<GameObject> spawnedEntities = new List<GameObject>();
+    private IReadOnlyCollection<GameObject> spawnedEntities;
     private Terrain terrain;
 
     void Awake()
@@ -46,15 +50,12 @@ public class EntitySpawner : MonoBehaviour
 
     void Start()
     {
-        // Start periodic spawning
+        spawnedEntities = GameEntities.GetCollection(sharedCollectionType);
         InvokeRepeating(nameof(SpawnAttempt), 0f, spawnInterval);
     }
 
     void SpawnAttempt()
     {
-        // Clean up destroyed enemies
-        spawnedEntities.RemoveAll(e => e == null);
-
         // Don't spawn if at cap
         if (spawnedEntities.Count >= maxEntities)
             return;
@@ -68,13 +69,13 @@ public class EntitySpawner : MonoBehaviour
 
         // Instantiate and track
         var enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
-        spawnedEntities.Add(enemy);
+        GameEntities.Add(sharedCollectionType, enemy);
     }
 
     Vector2 GetRandomPointInCircle()
     {
         Vector2 insideUnitCircle = Random.insideUnitCircle;
-        return Random.insideUnitCircle * (spawnRadius - minRadius) + insideUnitCircle * minRadius;
+        return insideUnitCircle * (spawnRadius - minRadius) + insideUnitCircle * minRadius;
     }
 
     Vector3 GetRandomPointOnGround(GameObject enemy)
@@ -88,7 +89,7 @@ public class EntitySpawner : MonoBehaviour
         if (isDebug)
         {
             Debug.Log($"Entity height: {height}");
-            Debug.DrawLine(candidate, candidate + (2f * raycastStartHeight * Vector3.down), Color.blue, 1000);
+            Debug.DrawLine(candidate, candidate + (2f * raycastStartHeight * Vector3.down), Color.blue, 5);
         }
 
         if (Physics.Raycast(

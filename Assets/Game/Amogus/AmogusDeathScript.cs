@@ -1,3 +1,4 @@
+using Assets.Game.Global;
 using UnityEngine;
 
 public class AmogusDeathScript : MonoBehaviour
@@ -10,6 +11,7 @@ public class AmogusDeathScript : MonoBehaviour
     {
         if(enemy != null)
         {
+            GameEntities.Remove(EntityType.Enemy, enemy);
             Destroy(enemy);
         }
     }

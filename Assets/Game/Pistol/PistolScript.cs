@@ -39,7 +39,7 @@ public class PistolScript : MonoBehaviour
             State = PistolState.Firing;
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
-                hit.transform.gameObject.SendMessage("ApplyDamage", 25);
+                hit.transform.gameObject.SendMessage("ApplyDamage", 50);
             }
         }
     }

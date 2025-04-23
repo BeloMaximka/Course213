@@ -573,17 +573,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3d4cc3a1ce4b44286e6fc57944fbd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefabs:
+  entityPrefabs:
   - {fileID: 6872904644601711781, guid: b6c5f2d938a3f924b8da1f10b1c4bd2a, type: 3}
+  sharedCollectionType: 1
   spawnAnchor: {fileID: 876191022}
-  spawnInterval: 10
-  maxEnemies: 10
+  spawnInterval: 5
+  maxEntities: 10
   spawnRadius: 60
   minRadius: 30
   raycastStartHeight: 100
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 80
+  isDebug: 0
 --- !u!4 &550990983
 Transform:
   m_ObjectHideFlags: 0

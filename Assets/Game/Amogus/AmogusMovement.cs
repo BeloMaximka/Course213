@@ -1,5 +1,5 @@
 using Assets.Game.Amogus;
-using JetBrains.Annotations;
+using Assets.Game.Global;
 using UnityEngine;
 
 public class AmogusMovement : MonoBehaviour
@@ -61,7 +61,7 @@ public class AmogusMovement : MonoBehaviour
             return;
         }
 
-        Vector3 targetVelocity = (player.transform.position - transform.position).normalized;
+        Vector3 targetVelocity = DirectionWithSpreadOutBehaviour();
         Vector3 lookDirection = (player.transform.position - transform.position).normalized;
         lookDirection.y = 0;
         modelWrap.rotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(0, -90, 0);
@@ -99,6 +99,29 @@ public class AmogusMovement : MonoBehaviour
         {
             IsDead = true;
         }
+    }
+
+    private Vector3 DirectionWithSpreadOutBehaviour()
+    {
+        Vector3 direction = player.transform.position - transform.position;
+        if(Vector3.Distance(player.transform.position, transform.position) < 15f)
+        {
+            return direction.normalized;
+        }
+
+        foreach (var entity in GameEntities.GetCollection(EntityType.Enemy))
+        {
+            if (entity == gameObject)
+            {
+                continue;
+            }
+
+            // Further - lesser magnitude
+            float distanceFactor = 3f / Vector3.Distance(transform.position, entity.transform.position);
+            direction += (transform.position - entity.transform.position) * distanceFactor;
+        }
+        Debug.DrawLine(transform.position, transform.position + direction.normalized * 2f, Color.magenta);
+        return direction.normalized;
     }
 
     private void CheckGround()
