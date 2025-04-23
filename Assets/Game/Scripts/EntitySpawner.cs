@@ -74,8 +74,9 @@ public class EntitySpawner : MonoBehaviour
 
     Vector2 GetRandomPointInCircle()
     {
-        Vector2 insideUnitCircle = Random.insideUnitCircle;
-        return insideUnitCircle * (spawnRadius - minRadius) + insideUnitCircle * minRadius;
+        Vector2 dir = Random.insideUnitCircle.normalized;
+        float dist = Random.Range(minRadius, spawnRadius);
+        return dir * dist;
     }
 
     Vector3 GetRandomPointOnGround(GameObject enemy)

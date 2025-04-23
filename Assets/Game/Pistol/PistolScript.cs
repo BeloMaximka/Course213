@@ -6,18 +6,14 @@ public class PistolScript : MonoBehaviour
     GameObject camera;
     LayerMask enemyMask;
     Animator animator;
-    private bool isFiring = false;
 
-    private PistolState state;
     public PistolState State
     {
         set
         {
-            state = value;
             animator.SetInteger("State", (int)value);
-            isFiring = false;
         }
-        get => state;
+        get => (PistolState)animator.GetInteger("State");
     }
 
     void Start()
@@ -33,9 +29,8 @@ public class PistolScript : MonoBehaviour
         updatedRotation.x = camera.transform.rotation.eulerAngles.x;
         transform.rotation = Quaternion.Euler(updatedRotation);
 
-        if(State == PistolState.Idle && Input.GetMouseButtonDown(0) && !isFiring)
+        if (State == PistolState.Idle && Input.GetMouseButtonDown(0))
         {
-            isFiring = true;
             State = PistolState.Firing;
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
