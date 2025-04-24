@@ -1,12 +1,4 @@
-﻿// CHANGE LOG
-//
-// CHANGES || version VERSION
-//
-// "Switched from Rigidbody to CharacterController, rewrote movement/jump/ground checks." || version 1.0.2
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 #if UNITY_EDITOR
@@ -39,7 +31,7 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private float yaw = 0.0f;
     private float pitch = 0.0f;
-    private Image crosshairObject;
+    public Image crosshairObject;
 
     #region Camera Zoom Variables
 
@@ -130,7 +122,6 @@ public class FirstPersonController : MonoBehaviour
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
-        crosshairObject = GetComponentInChildren<Image>();
 
         playerCamera.fieldOfView = fov;
         originalScale = transform.localScale;
@@ -145,6 +136,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Start()
     {
+        
         if (lockCursor)
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -297,7 +289,7 @@ public class FirstPersonController : MonoBehaviour
         if (!playerCanMove) return;
 
         // Determine input direction
-        Vector3 inputDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 inputDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         bool hasInput = inputDir.sqrMagnitude > 0.01f;
 
         // Sprint logic

@@ -101,6 +101,16 @@ public class AmogusMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (IsDead) return;
+
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            PlayerState.RecievedDamage = 5;
+        }
+    }
+
     private Vector3 DirectionWithSpreadOutBehaviour()
     {
         Vector3 direction = player.transform.position - transform.position;
