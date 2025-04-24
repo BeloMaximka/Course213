@@ -1,3 +1,4 @@
+using Assets.Game.Global;
 using Assets.Game.Pistol;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class PistolScript : MonoBehaviour
     GameObject camera;
     LayerMask enemyMask;
     Animator animator;
+    public AudioSource shotSound;
 
     public PistolState State
     {
@@ -29,9 +31,14 @@ public class PistolScript : MonoBehaviour
         updatedRotation.x = camera.transform.rotation.eulerAngles.x;
         transform.rotation = Quaternion.Euler(updatedRotation);
 
-        if (State == PistolState.Idle && Input.GetMouseButtonDown(0))
+        if (!PlayerState.IsPaused && State == PistolState.Idle && Input.GetMouseButtonDown(0))
         {
             State = PistolState.Firing;
+
+            shotSound.pitch = 0.75f + Random.value * 0.5f;
+            shotSound.volume = GameSettings.EffectsVolume * 0.1f;
+            shotSound.Play();
+
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
                 hit.transform.gameObject.SendMessage("ApplyDamage", 50);

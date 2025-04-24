@@ -60,5 +60,7 @@ namespace Assets.Game.Global
         {
             recievedDamage = 0;
         }
+
+        public static bool IsPaused { get; set; }
     }
 }

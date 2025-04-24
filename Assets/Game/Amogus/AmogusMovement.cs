@@ -19,13 +19,15 @@ public class AmogusMovement : MonoBehaviour
     private Animator animator;
 
 
+    public AudioSource deathSound;
+
     public bool IsDead
     {
         set
         {
             isDead = value;
+            deathSound.Play();
             animator.SetTrigger("Death");
-
         }
         get => isDead;
     }
@@ -35,6 +37,7 @@ public class AmogusMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player");
         modelWrap = transform.Find("ModelWrap");
+        GameSettings.EffectsVolumeChanged += OnVolumeChange;
     }
 
     void Update()
@@ -99,6 +102,16 @@ public class AmogusMovement : MonoBehaviour
         {
             IsDead = true;
         }
+    }
+
+    private void OnVolumeChange(float volume)
+    {
+        deathSound.volume = volume;
+    }
+
+    private void OnDestroy()
+    {
+        GameSettings.EffectsVolumeChanged -= OnVolumeChange;
     }
 
     private void OnCollisionEnter(Collision collision)

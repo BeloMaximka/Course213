@@ -117,8 +117,6 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
-    public GameObject menu;
-
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -180,7 +178,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleCamera()
     {
-        if (menu.activeInHierarchy) return;
+        if (PlayerState.IsPaused) return;
 
         yaw += Input.GetAxis("Mouse X") * GameSettings.MouseSensitivityX;
         float deltaY = Input.GetAxis("Mouse Y") * GameSettings.MouseSensitivityY;
