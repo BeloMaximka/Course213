@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Assets.Game.Global;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,12 +19,9 @@ public class FirstPersonController : MonoBehaviour
 
     public float fov = 60f;
     public bool invertCamera = false;
-    public bool cameraCanMove = true;
-    public float mouseSensitivity = 2f;
     public float maxLookAngle = 50f;
 
     // Crosshair
-    public bool lockCursor = true;
     public bool crosshair = true;
     public Sprite crosshairImage;
     public Color crosshairColor = Color.white;
@@ -119,6 +117,8 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    public GameObject menu;
+
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -136,10 +136,6 @@ public class FirstPersonController : MonoBehaviour
 
     private void Start()
     {
-        
-        if (lockCursor)
-            Cursor.lockState = CursorLockMode.Locked;
-
         if (crosshair)
         {
             crosshairObject.sprite = crosshairImage;
@@ -180,17 +176,14 @@ public class FirstPersonController : MonoBehaviour
         HandleCrouchInput();
         MoveCharacter();
         if (enableHeadBob) HeadBob();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-            cameraCanMove = !cameraCanMove;
     }
 
     private void HandleCamera()
     {
-        if (!cameraCanMove) return;
+        if (menu.activeInHierarchy) return;
 
-        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-        float deltaY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        yaw += Input.GetAxis("Mouse X") * GameSettings.MouseSensitivityX;
+        float deltaY = Input.GetAxis("Mouse Y") * GameSettings.MouseSensitivityY;
         pitch += invertCamera ? deltaY : -deltaY;
         pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
 

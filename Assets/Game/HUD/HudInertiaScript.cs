@@ -37,8 +37,11 @@ public class HudInertiaScript : MonoBehaviour
         transform.position = new Vector3(transform.position.x, headbobJoint.position.y, transform.position.z);
 
         // Smooth each axis independently
-        smoothX = Mathf.SmoothDampAngle(smoothX, camera.transform.rotation.eulerAngles.x, ref velX, smoothTime);
-        smoothY = Mathf.SmoothDampAngle(smoothY, cameraTransform.eulerAngles.y, ref velY, smoothTime);
+        smoothX = Mathf.SmoothDampAngle(smoothX, camera.transform.rotation.eulerAngles.x, ref velX, smoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
+        smoothY = Mathf.SmoothDampAngle(smoothY, cameraTransform.eulerAngles.y, ref velY, smoothTime, Mathf.Infinity, Time.unscaledDeltaTime);
+
+        smoothX = Mathf.Repeat(smoothX, 360f);
+        smoothY = Mathf.Repeat(smoothY, 360f);
 
         // Apply the smoothed rotation to the HUD
         transform.rotation = Quaternion.Euler(smoothX, smoothY, 0f);
