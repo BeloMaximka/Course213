@@ -1,4 +1,5 @@
 using Assets.Game.Global;
+using TMPro;
 using UnityEngine;
 
 public class HudInertiaScript : MonoBehaviour
@@ -13,6 +14,7 @@ public class HudInertiaScript : MonoBehaviour
 
     public Transform headbobJoint;
     public RectTransform healthBar;
+    public TextMeshProUGUI healthText;
 
     // Internal state for SmoothDampAngle
     private float smoothX;
@@ -46,6 +48,7 @@ public class HudInertiaScript : MonoBehaviour
     {
         float ratio = (float)newHealth / PlayerState.MaxHealth;
         healthBar.sizeDelta = new Vector2(healthBarMaxWidth * ratio, healthBar.sizeDelta.y);
+        healthText.text = newHealth.ToString();
     }
 
     private void OnDestroy()
