@@ -10,7 +10,6 @@ public class PickupAnimationScript : MonoBehaviour
 
     private void OnAnimationEnd()
     {
-        GameEntities.Remove(entityType, objectToDestroy);
-        Destroy(objectToDestroy);
+        GameEntities.Destroy(entityType, objectToDestroy);
     }
 }

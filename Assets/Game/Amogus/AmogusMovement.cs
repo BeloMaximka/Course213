@@ -101,7 +101,17 @@ public class AmogusMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        DamagePlayer(collision);
+    }
+
     private void OnCollisionStay(Collision collision)
+    {
+        DamagePlayer(collision);
+    }
+
+    private void DamagePlayer(Collision collision)
     {
         if (IsDead) return;
 
@@ -121,14 +131,14 @@ public class AmogusMovement : MonoBehaviour
 
         foreach (var entity in GameEntities.GetCollection(EntityType.Enemy))
         {
-            if (entity == gameObject)
+            if (entity.MainObject == gameObject)
             {
                 continue;
             }
 
             // Further - lesser magnitude
-            float distanceFactor = 3f / Vector3.Distance(transform.position, entity.transform.position);
-            direction += (transform.position - entity.transform.position) * distanceFactor;
+            float distanceFactor = 3f / Vector3.Distance(transform.position, entity.MainObject.transform.position);
+            direction += (transform.position - entity.MainObject.transform.position) * distanceFactor;
         }
         Debug.DrawLine(transform.position, transform.position + direction.normalized * 2f, Color.magenta);
         return direction.normalized;

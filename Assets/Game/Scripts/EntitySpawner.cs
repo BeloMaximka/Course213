@@ -37,7 +37,7 @@ public class EntitySpawner : MonoBehaviour
     public bool isDebug;
 
     // Internal list to track spawned enemies
-    private IReadOnlyCollection<GameObject> spawnedEntities;
+    private IReadOnlyCollection<EntityData> spawnedEntities;
     private Terrain terrain;
 
     void Awake()

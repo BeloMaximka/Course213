@@ -11,8 +11,7 @@ public class AmogusDeathScript : MonoBehaviour
     {
         if(enemy != null)
         {
-            GameEntities.Remove(EntityType.Enemy, enemy);
-            Destroy(enemy);
+            GameEntities.Destroy(EntityType.Enemy, enemy);
         }
     }
 }

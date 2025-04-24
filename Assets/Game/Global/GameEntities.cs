@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Assets.Game.Global
 {
     public static class GameEntities
     {
-        private readonly static LinkedList<GameObject>[] entities = new LinkedList<GameObject>[Enum.GetValues(typeof(EntityType)).Cast<int>().Max() + 1];
+        private readonly static LinkedList<EntityData>[] entities = new LinkedList<EntityData>[Enum.GetValues(typeof(EntityType)).Cast<int>().Max() + 1];
 
         static GameEntities()
         {
@@ -19,19 +17,28 @@ namespace Assets.Game.Global
             }
         }
 
-        public static IReadOnlyCollection<GameObject> GetCollection(EntityType entityType)
+        public static IReadOnlyCollection<EntityData> GetCollection(EntityType entityType)
         {
             return entities[(int)entityType];
         }
 
         public static void Add(EntityType entityType, GameObject entity)
         {
-            entities[(int)entityType].AddLast(entity);
+            entities[(int)entityType].AddLast(new EntityData { MainObject = entity });
         }
 
-        public static void Remove(EntityType entityType, GameObject entity)
+        public static void Destroy(EntityType entityType, GameObject entity)
         {
-            entities[(int)entityType].Remove(entity);
+            var result = entities[(int)entityType].FirstOrDefault((relatetObjects) => relatetObjects.MainObject == entity);
+            if (result is not null)
+            {
+                entities[(int)entityType].Remove(result);
+                UnityEngine.Object.Destroy(result.MainObject);
+                if(result.RadarPoint != null)
+                {
+                    UnityEngine.Object.Destroy(result.RadarPoint);
+                }
+            }
         }
     }
 }
