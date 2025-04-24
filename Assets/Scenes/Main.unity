@@ -2137,7 +2137,13 @@ MonoBehaviour:
   sharedCollectionType: 1
   spawnAnchor: {fileID: 4459864849781944766}
   spawnInterval: 1.5
+  spawnIntervalEasy: 3
+  spawnIntervalHard: 1
+  currentSpawnInterval: 5
   maxEntities: 50
+  maxEntitiesEasy: 20
+  maxEntitiesHard: 100
+  currentMaxEntities: 10
   spawnRadius: 60
   minRadius: 30
   raycastStartHeight: 100
@@ -7644,7 +7650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSound: {fileID: 2081522350}
-  damage: 100
+  damage: 50
 --- !u!95 &2081522349
 Animator:
   serializedVersion: 7
@@ -7985,7 +7991,13 @@ MonoBehaviour:
   sharedCollectionType: 2
   spawnAnchor: {fileID: 2119516390}
   spawnInterval: 25
+  spawnIntervalEasy: 20
+  spawnIntervalHard: 30
+  currentSpawnInterval: 5
   maxEntities: 5
+  maxEntitiesEasy: 5
+  maxEntitiesHard: 5
+  currentMaxEntities: 10
   spawnRadius: 90
   minRadius: 1
   raycastStartHeight: 100

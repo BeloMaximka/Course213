@@ -24,6 +24,18 @@ public class PistolScript : MonoBehaviour
         camera = GameObject.FindWithTag("MainCamera");
         enemyMask = LayerMask.GetMask("Enemy");
         animator = gameObject.GetComponent<Animator>();
+
+        GameSettings.DifficultyChanged += UpdateDifficultyValues;
+        UpdateDifficultyValues(GameSettings.Difficulty);
+    }
+
+    void UpdateDifficultyValues(DifficultyType difficulty)
+    {
+        damage = difficulty switch
+        {
+            DifficultyType.Easy => 100,
+            _ => (float)50,
+        };
     }
 
     void Update()
@@ -45,5 +57,10 @@ public class PistolScript : MonoBehaviour
                 hit.transform.gameObject.SendMessage("ApplyDamage", damage);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameSettings.DifficultyChanged -= UpdateDifficultyValues;
     }
 }

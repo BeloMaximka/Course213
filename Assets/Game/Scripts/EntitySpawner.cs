@@ -16,9 +16,15 @@ public class EntitySpawner : MonoBehaviour
 
     [Tooltip("Seconds between each spawn attempt")]
     public float spawnInterval = 5f;
+    public float spawnIntervalEasy = 5f;
+    public float spawnIntervalHard = 5f;
+    public float currentSpawnInterval = 5f;
 
     [Tooltip("Maximum number of entities alive at once")]
     public int maxEntities = 10;
+    public int maxEntitiesEasy = 10;
+    public int maxEntitiesHard = 10;
+    public int currentMaxEntities = 10;
 
     [Tooltip("Radius of the spawn circles")]
     public float spawnRadius = 20f;
@@ -58,13 +64,36 @@ public class EntitySpawner : MonoBehaviour
         }
 
         spawnedEntities = GameEntities.GetCollection(sharedCollectionType);
+        UpdateDifficultyValues(GameSettings.Difficulty);
+        GameSettings.DifficultyChanged += UpdateDifficultyValues;
+    }
+
+    void UpdateDifficultyValues(DifficultyType difficulty)
+    {
+        switch (difficulty)
+        {
+            case DifficultyType.Easy:
+                currentSpawnInterval = spawnIntervalEasy;
+                currentMaxEntities = maxEntitiesEasy;
+                break;
+            case DifficultyType.Medium:
+                currentSpawnInterval = spawnInterval;
+                currentMaxEntities = maxEntities;
+                break;
+            case DifficultyType.Hard:
+                currentSpawnInterval = spawnIntervalHard;
+                currentMaxEntities = maxEntitiesHard;
+                break;
+        }
+
+        CancelInvoke();
         InvokeRepeating(nameof(SpawnAttempt), 0f, spawnInterval);
     }
 
     void SpawnAttempt()
     {
         // Don't spawn if at cap
-        if (spawnedEntities.Count >= maxEntities)
+        if (spawnedEntities.Count >= currentMaxEntities)
             return;
 
         // Choose a random prefab
@@ -120,6 +149,11 @@ public class EntitySpawner : MonoBehaviour
             Debug.Log("Entity spawn position at anchor y-level");
         }
         return spawnAnchor.position + Vector3.up * height;
+    }
+
+    private void OnDestroy()
+    {
+        GameSettings.DifficultyChanged -= UpdateDifficultyValues;
     }
 
     void OnDrawGizmosSelected()

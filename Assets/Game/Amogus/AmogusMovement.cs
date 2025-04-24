@@ -22,6 +22,7 @@ public class AmogusMovement : MonoBehaviour
     public AudioSource deathSound;
 
     public float spreadFactor = 1f;
+    private int damage = 5;
 
     public bool IsDead
     {
@@ -41,6 +42,8 @@ public class AmogusMovement : MonoBehaviour
         modelWrap = transform.Find("ModelWrap");
         deathSound.volume = GameSettings.EffectsVolume;
         GameSettings.EffectsVolumeChanged += OnVolumeChange;
+        GameSettings.DifficultyChanged += UpdateDifficultyValues;
+        UpdateDifficultyValues(GameSettings.Difficulty);
     }
 
     void Update()
@@ -107,6 +110,25 @@ public class AmogusMovement : MonoBehaviour
         }
     }
 
+    void UpdateDifficultyValues(DifficultyType difficulty)
+    {
+        switch (difficulty)
+        {
+            case DifficultyType.Easy:
+                walkSpeed = 6;
+                damage = 5;
+                break;
+            case DifficultyType.Medium:
+                walkSpeed = 11;
+                damage = 10;
+                break;
+            case DifficultyType.Hard:
+                walkSpeed = 16;
+                damage = 15;
+                break;
+        }
+    }
+
     private void OnVolumeChange(float volume)
     {
         deathSound.volume = volume;
@@ -115,6 +137,7 @@ public class AmogusMovement : MonoBehaviour
     private void OnDestroy()
     {
         GameSettings.EffectsVolumeChanged -= OnVolumeChange;
+        GameSettings.DifficultyChanged -= UpdateDifficultyValues;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -133,7 +156,7 @@ public class AmogusMovement : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerState.RecievedDamage = 5;
+            PlayerState.RecievedDamage = damage;
         }
     }
 

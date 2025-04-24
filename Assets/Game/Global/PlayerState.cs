@@ -64,8 +64,8 @@ namespace Assets.Game.Global
         public static void Reset()
         {
             recievedDamage = 0;
-            health = 0;
-            maxHealth = 0;
+            health = 100;
+            maxHealth = 100;
             IsPaused = false;
         }
 
