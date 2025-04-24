@@ -7,8 +7,8 @@ public class AmbientMusicScript : MonoBehaviour
     void Start()
     {
         ambientMusic = GetComponent<AudioSource>();
-        GameSettings.MusicVolumeChanged += UpdateVolume;
         ambientMusic.volume = GameSettings.MusicVolume;
+        GameSettings.MusicVolumeChanged += UpdateVolume;
     }
 
     private void OnDestroy()
@@ -18,6 +18,7 @@ public class AmbientMusicScript : MonoBehaviour
 
     private void UpdateVolume(float volume)
     {
+        Debug.Log(volume);
         ambientMusic.volume = volume;
     }
 }

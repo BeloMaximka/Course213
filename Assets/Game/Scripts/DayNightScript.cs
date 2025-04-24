@@ -1,5 +1,6 @@
 using Assets.Game;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class DayNightScript : MonoBehaviour
 {
@@ -20,8 +21,14 @@ public class DayNightScript : MonoBehaviour
     private Material skyBox;
     bool isDay;
 
+    private Material waterMat;
+    public GameObject water;
+    private float waterBaseBrightness;
+
     void Start()
     {
+        waterMat = water.GetComponent<Renderer>().material;
+        waterBaseBrightness = waterMat.GetFloat("_AlbedoIntensity");
         rotationAngle = -360.0f / dayDuration;
         dayTime = 12.0f - transform.eulerAngles.z / 360.0f * 24.0f;
         while (dayTime >= 24)
@@ -48,7 +55,9 @@ public class DayNightScript : MonoBehaviour
             coef = Mathf.Clamp01(Mathf.Sin(t * Mathf.PI));
 
             sun.intensity = coef;
-            if(RenderSettings.sun != sun)
+            waterMat.SetFloat("_AlbedoIntensity", coef * waterBaseBrightness + 0.2f);
+
+            if (RenderSettings.sun != sun)
             {
                 RenderSettings.sun = sun;
                 moon.intensity = 0;
@@ -60,6 +69,7 @@ public class DayNightScript : MonoBehaviour
             coef = 0.3f * Mathf.Cos(arg * Mathf.PI / (dawnTime - (-dawnTime)));
 
             moon.intensity = coef;
+            waterMat.SetFloat("_AlbedoIntensity", coef * waterBaseBrightness + 0.2f);
             if (RenderSettings.sun != moon)
             {
                 RenderSettings.sun = moon;

@@ -30,6 +30,11 @@ public class RadarScript : MonoBehaviour
     {
         foreach (var entity in GameEntities.GetCollection(entityType))
         {
+            if(entity.MainObject == null)
+            {
+                continue;
+            }
+
             if(entity.RadarPoint == null)
             {
                 entity.RadarPoint = Instantiate(prefab, pointCollection);

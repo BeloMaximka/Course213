@@ -872,6 +872,7 @@ MonoBehaviour:
   maxVelocityChange: 10
   animator: {fileID: 1764949496404011973}
   deathSound: {fileID: 8739934050202395909}
+  spreadFactor: 50
 --- !u!136 &4015111684868328509
 CapsuleCollider:
   m_ObjectHideFlags: 0

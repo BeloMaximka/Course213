@@ -36,6 +36,8 @@ public class EntitySpawner : MonoBehaviour
     [Tooltip("Enable debug info")]
     public bool isDebug;
 
+    public float elevation = 0f;
+
     // Internal list to track spawned enemies
     private IReadOnlyCollection<EntityData> spawnedEntities;
     private Terrain terrain;
@@ -91,7 +93,7 @@ public class EntitySpawner : MonoBehaviour
 
 
         Renderer col = enemy.GetComponentInChildren<Renderer>();
-        float height = (col != null ? col.bounds.size.y : 100f);
+        float height = (col != null ? col.bounds.size.y : 100f) + elevation;
         if (isDebug)
         {
             Debug.Log($"Entity height: {height}");
@@ -115,7 +117,7 @@ public class EntitySpawner : MonoBehaviour
 
         if (isDebug)
         {
-            Debug.Log("Entity spawn position at player y-level");
+            Debug.Log("Entity spawn position at anchor y-level");
         }
         return spawnAnchor.position + Vector3.up * height;
     }

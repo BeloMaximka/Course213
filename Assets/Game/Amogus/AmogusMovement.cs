@@ -21,6 +21,8 @@ public class AmogusMovement : MonoBehaviour
 
     public AudioSource deathSound;
 
+    public float spreadFactor = 1f;
+
     public bool IsDead
     {
         set
@@ -37,6 +39,7 @@ public class AmogusMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindWithTag("Player");
         modelWrap = transform.Find("ModelWrap");
+        deathSound.volume = GameSettings.EffectsVolume;
         GameSettings.EffectsVolumeChanged += OnVolumeChange;
     }
 
@@ -137,7 +140,7 @@ public class AmogusMovement : MonoBehaviour
     private Vector3 DirectionWithSpreadOutBehaviour()
     {
         Vector3 direction = player.transform.position - transform.position;
-        if(Vector3.Distance(player.transform.position, transform.position) < 15f)
+        if(Vector3.Distance(player.transform.position, transform.position) < 20f)
         {
             return direction.normalized;
         }
@@ -149,8 +152,9 @@ public class AmogusMovement : MonoBehaviour
                 continue;
             }
 
+            float dst = Vector3.Distance(transform.position, entity.MainObject.transform.position);
             // Further - lesser magnitude
-            float distanceFactor = 3f / Vector3.Distance(transform.position, entity.MainObject.transform.position);
+            float distanceFactor = spreadFactor / (dst * dst);
             direction += (transform.position - entity.MainObject.transform.position) * distanceFactor;
         }
         Debug.DrawLine(transform.position, transform.position + direction.normalized * 2f, Color.magenta);

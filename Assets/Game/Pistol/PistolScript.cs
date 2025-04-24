@@ -8,6 +8,7 @@ public class PistolScript : MonoBehaviour
     LayerMask enemyMask;
     Animator animator;
     public AudioSource shotSound;
+    public float damage = 50;
 
     public PistolState State
     {
@@ -41,7 +42,7 @@ public class PistolScript : MonoBehaviour
 
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
-                hit.transform.gameObject.SendMessage("ApplyDamage", 50);
+                hit.transform.gameObject.SendMessage("ApplyDamage", damage);
             }
         }
     }

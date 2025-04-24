@@ -9,7 +9,7 @@ namespace Assets.Game.Global
         private static float effectsVolume = 0.5f;
         public static float EffectsVolume
         {
-            get => effectsVolume;
+            get => isMuted ? 0 : effectsVolume;
             set
             {
                 if (effectsVolume == value)
@@ -18,9 +18,9 @@ namespace Assets.Game.Global
                 }
                 effectsVolume = value;
 
-                if (!isMuted && EffectsVolumeChanged != null)
+                if (!isMuted)
                 {
-                    EffectsVolumeChanged.Invoke(effectsVolume);
+                    EffectsVolumeChanged?.Invoke(effectsVolume);
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace Assets.Game.Global
         private static float musicVolume = 0.25f;
         public static float MusicVolume
         {
-            get => musicVolume;
+            get => isMuted ? 0 : musicVolume;
             set
             {
                 if (musicVolume == value)
@@ -39,9 +39,9 @@ namespace Assets.Game.Global
                 }
 
                 musicVolume = value;
-                if (!isMuted && MusicVolumeChanged != null)
+                if (!isMuted)
                 {
-                    MusicVolumeChanged.Invoke(musicVolume);
+                    MusicVolumeChanged?.Invoke(musicVolume);
                 }
             }
         }
@@ -58,8 +58,8 @@ namespace Assets.Game.Global
                 }
 
                 isMuted = value;
-                MusicVolumeChanged.Invoke(isMuted ? 0 : musicVolume);
-                EffectsVolumeChanged.Invoke(isMuted ? 0 : effectsVolume);
+                MusicVolumeChanged?.Invoke(isMuted ? 0 : musicVolume);
+                EffectsVolumeChanged?.Invoke(isMuted ? 0 : effectsVolume);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Assets.Game.Global
                 }
 
                 difficulty = value;
-                DifficultyChanged.Invoke(difficulty);
+                DifficultyChanged?.Invoke(difficulty);
             }
         }
 

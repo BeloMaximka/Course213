@@ -40,5 +40,13 @@ namespace Assets.Game.Global
                 }
             }
         }
+
+        public static void Clear()
+        {
+            for (var i = 0; i < entities.Length; i++)
+            {
+                entities[i].Clear();
+            }
+        }
     }
 }

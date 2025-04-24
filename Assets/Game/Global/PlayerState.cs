@@ -61,6 +61,14 @@ namespace Assets.Game.Global
             recievedDamage = 0;
         }
 
+        public static void Reset()
+        {
+            recievedDamage = 0;
+            health = 0;
+            maxHealth = 0;
+            IsPaused = false;
+        }
+
         public static bool IsPaused { get; set; }
     }
 }
