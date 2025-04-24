@@ -50,6 +50,11 @@ public class EntitySpawner : MonoBehaviour
 
     void Start()
     {
+        if(spawnAnchor == null)
+        {
+            spawnAnchor = transform;
+        }
+
         spawnedEntities = GameEntities.GetCollection(sharedCollectionType);
         InvokeRepeating(nameof(SpawnAttempt), 0f, spawnInterval);
     }
@@ -86,7 +91,7 @@ public class EntitySpawner : MonoBehaviour
 
 
         Renderer col = enemy.GetComponentInChildren<Renderer>();
-        float height = (col != null ? col.bounds.size.y : 100f) + 1f;
+        float height = (col != null ? col.bounds.size.y : 100f);
         if (isDebug)
         {
             Debug.Log($"Entity height: {height}");

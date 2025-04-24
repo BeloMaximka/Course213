@@ -4,5 +4,6 @@
     {
         Shared,
         Enemy,
+        FirstAid,
     }
 }

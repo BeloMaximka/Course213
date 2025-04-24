@@ -35,7 +35,7 @@ namespace Assets.Game.Global
                 {
                     return;
                 }
-                health = Math.Max(0, value);
+                health = Math.Clamp(value, 0, maxHealth);
 
                 HealthChanged.Invoke(health);
             }
