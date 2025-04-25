@@ -52,6 +52,7 @@ public class PistolScript : MonoBehaviour
             shotSound.volume = GameSettings.EffectsVolume * 0.1f;
             shotSound.Play();
 
+            Debug.DrawLine(camera.transform.position, camera.transform.position + transform.rotation * Vector3.forward * 1000f, Color.red, 1);
             if (Physics.Raycast(camera.transform.position, transform.rotation * Vector3.forward, out RaycastHit hit, 1000f, enemyMask))
             {
                 hit.transform.gameObject.SendMessage("ApplyDamage", damage);

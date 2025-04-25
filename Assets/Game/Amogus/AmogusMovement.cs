@@ -48,7 +48,7 @@ public class AmogusMovement : MonoBehaviour
 
     void Update()
     {
-        if (IsDead)
+        if (IsDead || Mathf.Approximately(Time.timeScale, 0f))
         {
             return;
         }
